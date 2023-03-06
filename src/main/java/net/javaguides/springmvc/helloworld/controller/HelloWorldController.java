@@ -15,4 +15,9 @@ public class HelloWorldController {
 	@RequestMapping("/rapid7")
 	public void vulnerable(HelloWorld model) {
 	}
+	
+
+	@RequestMapping("/rapid7NoOutput")
+	public void vulnerableToo(HelloWorld model) {
+	}
 }
