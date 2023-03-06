@@ -31,6 +31,7 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -52,30 +53,17 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request) {
 
-        logger.error("Context path: " + request.getContextPath());
-        logger.error("Status: " + status);
-        logger.error("Status value: " + status.value());
-        logger.error("Is client error: " + status.is4xxClientError());
-        logger.error("Status: " + status.toString());
-        logger.error("Status series: " + status.series().toString());
-        logger.error("Status series value: " + status.series().value());
-        logger.error("Status series second: " + status.series().name());
-
-        System.out.println("Context path: " + request.getContextPath());
-        System.out.println("Status: " + status);
-        System.out.println("Status value: " + status.value());
-        System.out.println("Is client error: " + status.is4xxClientError());
-        System.out.println("Status: " + status.toString());
-        System.out.println("Status series: " + status.series().toString());
-        System.out.println("Status series value: " + status.series().value());
-        System.out.println("Status series second: " + status.series().name());
-
         return this.handleExceptionInternal(ex, "testing stuff", headers, HttpStatus.OK, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity(body, headers, HttpStatus.OK);
+        if (((ServletWebRequest)request).getRequest().getRequestURI().contains("rapid7WrongResponseCode")) {
+            return new ResponseEntity(body, headers, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(body, headers, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ExceptionHandler(InvocationTargetException.class)

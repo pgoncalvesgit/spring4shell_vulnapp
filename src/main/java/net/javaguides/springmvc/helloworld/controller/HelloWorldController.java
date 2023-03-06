@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import net.javaguides.springmvc.helloworld.model.HelloWorld;
@@ -27,7 +26,7 @@ public class HelloWorldController {
 	}
 	
 
-	@RequestMapping("/rapid7NoOutput")
+	@RequestMapping("/rapid7WrongResponseCode")
 	public void vulnerableToo(HelloWorld model) {
 	}
 
